@@ -1,0 +1,8 @@
+
+opam-version: "1.2"
+version: "dev"
+maintainer: "phil@kitten.sh"
+author: ["Phil Pluckthun"]
+build: [
+
+]

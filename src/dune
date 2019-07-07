@@ -1,0 +1,7 @@
+(library
+  (name reglsloptimizer)
+  (public_name reglsloptimizer)
+  (libraries reglsloptimizer_c)
+  (c_names glsloptimizer_stubs)
+  (c_library_flags :standard -lstdc++)
+  (c_flags (:standard \ -pedantic) (-Ilibglsloptimizer)))

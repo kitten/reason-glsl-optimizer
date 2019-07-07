@@ -1,0 +1,30 @@
+{
+  "name": "reason-glsl-optimizer",
+  "version": "0.1.0",
+  "description": "GLSL Optimizer Bindings for OCaml",
+  "license": "MIT",
+  "author": "Phil Pluckthun <phil@kitten.sh>",
+  "repository": "https://github.com/kitten/reason-glsl-optimizer",
+  "homepage": "https://github.com/kitten/reason-glsl-optimizer",
+  "bugs": "https://github.com/kitten/reason-glsl-optimizer/issues",
+  "esy": {
+    "build": [
+      ["refmterr", "dune", "build", "--root", "."]
+    ],
+    "install": [
+      "esy-installer"
+    ]
+  },
+  "peerDependencies": {
+    "ocaml": "~4.6.0"
+  },
+  "dependencies": {
+    "@esy-ocaml/reason": ">= 3.4.0 < 3.5.0",
+    "@opam/dune": "*",
+    "esy-cmake": "^0.3.4",
+    "refmterr": "*"
+  },
+  "devDependencies": {
+    "ocaml": "~4.6.0"
+  }
+}

@@ -1,0 +1,13 @@
+(library
+  (name reglsloptimizer_c)
+  (public_name reglsloptimizer.c)
+  (preprocess no_preprocessing)
+  (c_library_flags :standard -lstdc++)
+  (self_build_stubs_archive (glsloptimizer)))
+
+(rule
+  (deps (source_tree .))
+  (targets libglsloptimizer_stubs.a dllglsloptimizer_stubs.so)
+  (action (progn
+    (run cmake .)
+    (run make))))
