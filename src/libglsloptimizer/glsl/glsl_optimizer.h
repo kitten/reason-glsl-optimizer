@@ -94,6 +94,8 @@ void glslopt_shader_get_uniform_desc (glslopt_shader* shader, int index, const c
 int glslopt_shader_get_texture_count (glslopt_shader* shader);
 void glslopt_shader_get_texture_desc (glslopt_shader* shader, int index, const char** outName, enum glslopt_basic_type* outType, enum glslopt_precision* outPrec, int* outVecSize, int* outMatSize, int* outArraySize, int* outLocation);
 
+enum glslopt_target glslopt_shader_get_target (glslopt_shader* shader);
+
 // Get *very* approximate shader stats:
 // Number of math, texture and flow control instructions.
 void glslopt_shader_get_stats (glslopt_shader* shader, int* approxMath, int* approxTex, int* approxFlow);

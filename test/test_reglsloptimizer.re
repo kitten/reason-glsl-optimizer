@@ -29,10 +29,18 @@ let fs = {|
   }
 |};
 
-let vsShader = convertShader(Vertex, vs);
-let fsShader = convertShader(Vertex, fs);
+let vsMetal = convertShader(~target=Metal, Vertex, vs);
+let fsMetal = convertShader(~target=Metal, Fragment, fs);
 
-print_endline("vs:");
-print_endline(getOutput(vsShader));
-print_endline("fs:");
-print_endline(getOutput(fsShader));
+let vsGL = convertShader(~target=OpenGL, Vertex, vs);
+let fsGL = convertShader(~target=OpenGL, Fragment, fs);
+
+print_endline("vs metal:");
+print_endline(getOutput(vsMetal));
+print_endline("fs metal:");
+print_endline(getOutput(fsMetal));
+
+print_endline("vs gl:");
+print_endline(getOutput(vsGL));
+print_endline("fs gl:");
+print_endline(getOutput(fsGL));

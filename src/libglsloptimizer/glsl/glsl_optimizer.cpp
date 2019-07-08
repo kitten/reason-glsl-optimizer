@@ -192,7 +192,8 @@ struct glslopt_shader
 	char*	rawOutput;
 	char*	optimizedOutput;
 	const char*	infoLog;
-	bool	status;
+	bool status;
+	glslopt_target target;
 };
 
 static inline void debug_print_ir (const char* name, exec_list* ir, _mesa_glsl_parse_state* state, void* memctx)
@@ -606,6 +607,7 @@ static void find_shader_variables(glslopt_shader* sh, exec_list* ir)
 glslopt_shader* glslopt_optimize (glslopt_ctx* ctx, glslopt_shader_type type, const char* shaderSource, unsigned options)
 {
 	glslopt_shader* shader = new (ctx->mem_ctx) glslopt_shader ();
+  shader->target = ctx->target;
 
 	PrintGlslMode printMode = kPrintGlslVertex;
 	switch (type) {
@@ -762,6 +764,11 @@ int glslopt_shader_get_uniform_total_size (glslopt_shader* shader)
 int glslopt_shader_get_texture_count (glslopt_shader* shader)
 {
 	return shader->textureCount;
+}
+
+glslopt_target glslopt_shader_get_target (glslopt_shader* shader)
+{
+	return shader->target;
 }
 
 void glslopt_shader_get_input_desc (glslopt_shader* shader, int index, const char** outName, glslopt_basic_type* outType, glslopt_precision* outPrec, int* outVecSize, int* outMatSize, int* outArraySize, int* outLocation)

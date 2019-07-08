@@ -11,25 +11,34 @@
 
 #include "glsl/glsl_optimizer.h"
 
+#define Val_none Val_int(0)
+#define Some_val(v) Field(v,0)
+
+static enum glslopt_options opts = kGlslOptionSkipPreprocessor;
+
+static glslopt_ctx* gl_ctx = NULL;
+static glslopt_ctx* gles2_ctx = NULL;
+static glslopt_ctx* gles3_ctx = NULL;
+static glslopt_ctx* metal_ctx = NULL;
+
+// The OpenGL ES3 pragma will be replaced manually
 static char pragma[] = "#version 300 es";
 static int pragma_len = sizeof(pragma) - 1;
-static enum glslopt_options opts = kGlslOptionSkipPreprocessor;
-static glslopt_ctx* ctx = NULL;
+
+static char gl_pragma[] = "#version 330   ";
+static char gles2_pragma[] = "#version 200 es";
+static char gles3_pragma[] = "#version 300 es";
+static char empty_pragma[] = "               ";
 
 /*-- glslopt_target --------------------------------------------------------*/
 
 #if defined(__APPLE__)
-  static char new_pragma[] = "               ";
-  static enum glslopt_target target = kGlslTargetMetal;
+  static enum glslopt_target default_target = kGlslTargetMetal;
+#elif defined(__EMSCRIPTEN__)
+  static enum glslopt_target default_target = kGlslTargetOpenGLES30;
 #else
-  static char new_pragma[] = "#version 330   ";
-  static enum glslopt_target target = kGlslTargetOpenGL;
+  static enum glslopt_target default_target = kGlslTargetOpenGL;
 #endif
-
-CAMLprim value tg_target() {
-  CAMLparam0();
-  CAMLreturn(Val_int(target));
-}
 
 /*-- glslopt_shader --------------------------------------------------------*/
 
@@ -60,11 +69,33 @@ static value _tg_copy_glslopt_shader(glslopt_shader* shader) {
 
 /*-- glslopt_optimize --------------------------------------------------------*/
 
-CAMLprim value tg_convert_shader(value type, value source) {
-  CAMLparam2(type, source);
+CAMLprim value tg_convert_shader(value target, value type, value source) {
+  CAMLparam3(target, type, source);
   CAMLlocal1(ret);
-  if (ctx == NULL) {
-    ctx = glslopt_initialize(target);
+
+  enum glslopt_target glsl_target = target != Val_none
+    ? Int_val(Some_val(target))
+    : default_target;
+
+  // Get the appropriate context and initialize it on demand
+  glslopt_ctx* ctx;
+  switch (glsl_target) {
+    case kGlslTargetOpenGL: // OpenGL
+      if (!gl_ctx) gl_ctx = glslopt_initialize(kGlslTargetOpenGL);
+      ctx = gl_ctx;
+      break;
+    case kGlslTargetOpenGLES20: // OpenGL ES2
+      if (!gles2_ctx) gles2_ctx = glslopt_initialize(kGlslTargetOpenGLES20);
+      ctx = gles2_ctx;
+      break;
+    case kGlslTargetOpenGLES30: // OpenGL ES3
+      if (!gles3_ctx) gles3_ctx = glslopt_initialize(kGlslTargetOpenGLES30);
+      ctx = gles3_ctx;
+      break;
+    case kGlslTargetMetal: // Metal
+      if (!metal_ctx) metal_ctx = glslopt_initialize(kGlslTargetMetal);
+      ctx = metal_ctx;
+      break;
   }
 
   enum glslopt_shader_type glslopt_type = Int_val(type);
@@ -83,11 +114,26 @@ CAMLprim value tg_get_output(value shader) {
   CAMLparam1(shader);
   CAMLlocal1(str);
   glslopt_shader* shader_val = *((glslopt_shader **) Data_custom_val(shader));
-
   const char* output = glslopt_get_output(shader_val);
+
   char* pragma_start = strstr(output, pragma);
   if (pragma_start) {
-    strncpy(pragma_start, new_pragma, pragma_len);
+    char* replacement_pragma;
+    switch (glslopt_shader_get_target(shader_val)) {
+      case kGlslTargetOpenGL:
+        replacement_pragma = gl_pragma;
+        break;
+      case kGlslTargetOpenGLES20:
+        replacement_pragma = gles2_pragma;
+        break;
+      case kGlslTargetOpenGLES30:
+        replacement_pragma = gles3_pragma;
+        break;
+      default:
+        replacement_pragma = empty_pragma;
+    }
+
+    strncpy(pragma_start, replacement_pragma, pragma_len);
   }
 
   str = caml_copy_string(output);

@@ -44,8 +44,12 @@ type shaderDescT = {
   location: int
 };
 
-external getTarget: unit => glslTarget = "tg_target";
-external convertShader: (shaderType, string) => shaderT = "tg_convert_shader";
+external convertShader: (
+  ~target: glslTarget=?,
+  shaderType,
+  string
+) => shaderT = "tg_convert_shader";
+
 external getOutput: shaderT => string = "tg_get_output";
 external getInputLength: shaderT => int = "tg_get_input_length";
 external getUniformLength: shaderT => int = "tg_get_uniform_length";

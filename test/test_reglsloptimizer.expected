@@ -1,0 +1,79 @@
+vs metal:
+#include <metal_stdlib>
+#pragma clang diagnostic ignored "-Wparentheses-equality"
+using namespace metal;
+struct xlatMtlShaderInput {
+  float3 position [[attribute(0)]];
+  float3 color [[attribute(1)]];
+};
+struct xlatMtlShaderOutput {
+  float4 gl_Position [[position]];
+  float4 out_color;
+};
+struct xlatMtlShaderUniform {
+  float4x4 mat;
+};
+vertex xlatMtlShaderOutput xlatMtlMain (xlatMtlShaderInput _mtl_i [[stage_in]], constant xlatMtlShaderUniform& _mtl_u [[buffer(0)]])
+{
+  xlatMtlShaderOutput _mtl_o;
+  float4 tmpvar_1 = 0;
+  tmpvar_1.w = 1.0;
+  tmpvar_1.xyz = _mtl_i.position;
+  _mtl_o.gl_Position = (_mtl_u.mat * tmpvar_1);
+  float4 tmpvar_2 = 0;
+  tmpvar_2.w = 1.0;
+  tmpvar_2.xyz = _mtl_i.color;
+  _mtl_o.out_color = tmpvar_2;
+  return _mtl_o;
+}
+
+
+fs metal:
+#include <metal_stdlib>
+#pragma clang diagnostic ignored "-Wparentheses-equality"
+using namespace metal;
+struct xlatMtlShaderInput {
+  float4 out_color;
+};
+struct xlatMtlShaderOutput {
+  float4 frag_color [[color(0)]];
+};
+struct xlatMtlShaderUniform {
+};
+fragment xlatMtlShaderOutput xlatMtlMain (xlatMtlShaderInput _mtl_i [[stage_in]], constant xlatMtlShaderUniform& _mtl_u [[buffer(0)]])
+{
+  xlatMtlShaderOutput _mtl_o;
+  _mtl_o.frag_color = _mtl_i.out_color;
+  return _mtl_o;
+}
+
+
+vs gl:
+#version 330   
+in vec3 position;
+in vec3 color;
+uniform mat4 mat;
+out vec4 out_color;
+void main ()
+{
+  vec4 tmpvar_1;
+  tmpvar_1.w = 1.0;
+  tmpvar_1.xyz = position;
+  gl_Position = (mat * tmpvar_1);
+  vec4 tmpvar_2;
+  tmpvar_2.w = 1.0;
+  tmpvar_2.xyz = color;
+  out_color = tmpvar_2;
+}
+
+
+fs gl:
+#version 330   
+in highp vec4 out_color;
+out highp vec4 frag_color;
+void main ()
+{
+  frag_color = out_color;
+}
+
+
