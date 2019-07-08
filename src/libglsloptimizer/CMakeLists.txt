@@ -28,7 +28,8 @@ file(GLOB_RECURSE ROOT_HEADER ./glsloptimizer.h)
 
 add_compile_options(
   -Os
-  -DNDEBUG
+  -DNDEBUG=1
+  -DYYDEBUG=0
   -Wno-return-type
   -Wno-deprecated-register
   -fno-threadsafe-statics
