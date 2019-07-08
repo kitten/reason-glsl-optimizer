@@ -1,6 +1,6 @@
 {
   "name": "reason-glsl-optimizer",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "GLSL Optimizer Bindings for OCaml",
   "license": "MIT",
   "author": "Phil Pluckthun <phil@kitten.sh>",
@@ -9,7 +9,13 @@
   "bugs": "https://github.com/kitten/reason-glsl-optimizer/issues",
   "esy": {
     "build": [
-      ["refmterr", "dune", "build", "--root", "."]
+      [
+        "refmterr",
+        "dune",
+        "build",
+        "--root",
+        "."
+      ]
     ],
     "install": [
       "esy-installer"
