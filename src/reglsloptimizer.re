@@ -51,9 +51,6 @@ external convertShader: (
 ) => shaderT = "tg_convert_shader";
 
 external getOutput: shaderT => string = "tg_get_output";
-external getInputLength: shaderT => int = "tg_get_input_length";
-external getUniformLength: shaderT => int = "tg_get_uniform_length";
-external getTextureLength: shaderT => int = "tg_get_texture_length";
-external getInputDesc: (shaderT, int) => shaderDescT = "tg_get_input_desc";
-external getUniformDesc: (shaderT, int) => shaderDescT = "tg_get_uniform_desc";
-external getTextureDesc: (shaderT, int) => shaderDescT = "tg_get_texture_desc";
+external describeInputs: shaderT => array(shaderDescT) = "tg_get_inputs";
+external describeUniforms: shaderT => array(shaderDescT) = "tg_get_uniforms";
+external describeTextures: shaderT => array(shaderDescT) = "tg_get_textures";

@@ -1,4 +1,4 @@
-vs metal:
+---vs metal:
 #include <metal_stdlib>
 #pragma clang diagnostic ignored "-Wparentheses-equality"
 using namespace metal;
@@ -28,7 +28,12 @@ vertex xlatMtlShaderOutput xlatMtlMain (xlatMtlShaderInput _mtl_i [[stage_in]], 
 }
 
 
-fs metal:
+---vs metal inputs:
+position
+color
+---vs metal uniforms:
+mat
+---fs metal:
 #include <metal_stdlib>
 #pragma clang diagnostic ignored "-Wparentheses-equality"
 using namespace metal;
@@ -48,7 +53,10 @@ fragment xlatMtlShaderOutput xlatMtlMain (xlatMtlShaderInput _mtl_i [[stage_in]]
 }
 
 
-vs gl:
+---fs metal inputs:
+out_color
+---fs metal uniforms:
+---vs gl:
 #version 330   
 in vec3 position;
 in vec3 color;
@@ -67,7 +75,12 @@ void main ()
 }
 
 
-fs gl:
+---fs gl inputs:
+position
+color
+---fs gl uniforms:
+mat
+---fs gl:
 #version 330   
 in highp vec4 out_color;
 out highp vec4 frag_color;
@@ -77,3 +90,6 @@ void main ()
 }
 
 
+---fs gl inputs:
+out_color
+---fs gl uniforms:
