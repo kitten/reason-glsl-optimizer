@@ -1,6 +1,6 @@
 {
   "name": "reason-glsl-optimizer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "GLSL Optimizer Bindings for OCaml",
   "license": "MIT",
   "author": "Phil Pluckthun <phil@kitten.sh>",
