@@ -228,8 +228,10 @@ write_mask_to_swizzle(unsigned write_mask)
    case WRITEMASK_Y: return SWIZZLE_Y;
    case WRITEMASK_Z: return SWIZZLE_Z;
    case WRITEMASK_W: return SWIZZLE_W;
+   default:
+     unreachable("not reached");
+     return SWIZZLE_W;
    }
-   unreachable("not reached");
 }
 
 /**

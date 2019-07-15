@@ -1,13 +1,113 @@
+(include_subdirs unqualified)
+
 (library
   (name reglsloptimizer_c)
   (public_name reglsloptimizer.c)
-  (preprocess no_preprocessing)
-  (c_library_flags :standard -lstdc++)
-  (self_build_stubs_archive (glsloptimizer)))
-
-(rule
-  (deps (source_tree .))
-  (targets libglsloptimizer_stubs.a dllglsloptimizer_stubs.so)
-  (action (progn
-    (run cmake .)
-    (run cmake --build .))))
+  (c_flags (-I. -Imesa))
+  (cxx_flags (-I. -Imesa))
+  (c_names
+    hash_table
+    ralloc
+    imports
+    prog_hash_table
+    symbol_table
+    glcpp-lex
+    glcpp-parse
+    pp
+    strtod)
+  (cxx_names
+    ast_array_index
+    ast_expr
+    ast_function
+    ast_to_hir
+    ast_type
+    builtin_functions
+    builtin_types
+    builtin_variables
+    glsl_lexer
+    glsl_optimizer
+    glsl_parser
+    glsl_parser_extras
+    glsl_symbol_table
+    glsl_types
+    hir_field_selection
+    ir
+    ir_basic_block
+    ir_builder
+    ir_clone
+    ir_constant_expression
+    ir_equals
+    ir_expression_flattening
+    ir_function
+    ir_function_can_inline
+    ir_function_detect_recursion
+    ir_hierarchical_visitor
+    ir_hv_accept
+    ir_import_prototypes
+    ir_print_glsl_visitor
+    ir_print_metal_visitor
+    ir_print_visitor
+    ir_rvalue_visitor
+    ir_stats
+    ir_unused_structs
+    ir_validate
+    ir_variable_refcount
+    link_atomics
+    link_functions
+    link_interface_blocks
+    link_uniform_block_active_visitor
+    link_uniform_blocks
+    link_uniform_initializers
+    link_uniforms
+    link_varyings
+    linker
+    loop_analysis
+    loop_controls
+    loop_unroll
+    lower_clip_distance
+    lower_discard
+    lower_discard_flow
+    lower_if_to_cond_assign
+    lower_instructions
+    lower_jumps
+    lower_mat_op_to_vec
+    lower_named_interface_blocks
+    lower_noise
+    lower_offset_array
+    lower_output_reads
+    lower_packed_varyings
+    lower_packing_builtins
+    lower_ubo_reference
+    lower_variable_index_to_cond_assign
+    lower_vec_index_to_cond_assign
+    lower_vec_index_to_swizzle
+    lower_vector
+    lower_vector_insert
+    lower_vertex_id
+    opt_algebraic
+    opt_array_splitting
+    opt_constant_folding
+    opt_constant_propagation
+    opt_constant_variable
+    opt_copy_propagation
+    opt_copy_propagation_elements
+    opt_cse
+    opt_dead_builtin_variables
+    opt_dead_builtin_varyings
+    opt_dead_code
+    opt_dead_code_local
+    opt_dead_functions
+    opt_flatten_nested_if_blocks
+    opt_flip_matrices
+    opt_function_inlining
+    opt_if_simplification
+    opt_minmax
+    opt_noop_swizzle
+    opt_rebalance_tree
+    opt_redundant_jumps
+    opt_structure_splitting
+    opt_swizzle_swizzle
+    opt_tree_grafting
+    opt_vectorize
+    s_expression
+    standalone_scaffolding))
