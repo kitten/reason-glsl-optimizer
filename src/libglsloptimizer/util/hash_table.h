@@ -44,7 +44,7 @@ struct hash_entry {
    void *data;
 };
 
-struct hash_table {
+struct _mesa_hash_table {
    struct hash_entry *table;
    bool (*key_equals_function)(const void *a, const void *b);
    const void *deleted_key;
@@ -56,28 +56,28 @@ struct hash_table {
    uint32_t deleted_entries;
 };
 
-struct hash_table *
+struct _mesa_hash_table *
 _mesa_hash_table_create(void *mem_ctx,
                         bool (*key_equals_function)(const void *a,
                                                     const void *b));
-void _mesa_hash_table_destroy(struct hash_table *ht,
+void _mesa_hash_table_destroy(struct _mesa_hash_table *ht,
                               void (*delete_function)(struct hash_entry *entry));
-void _mesa_hash_table_set_deleted_key(struct hash_table *ht,
+void _mesa_hash_table_set_deleted_key(struct _mesa_hash_table *ht,
                                       const void *deleted_key);
 
 struct hash_entry *
-_mesa_hash_table_insert(struct hash_table *ht, uint32_t hash,
+_mesa_hash_table_insert(struct _mesa_hash_table *ht, uint32_t hash,
                         const void *key, void *data);
 struct hash_entry *
-_mesa_hash_table_search(struct hash_table *ht, uint32_t hash,
+_mesa_hash_table_search(struct _mesa_hash_table *ht, uint32_t hash,
                         const void *key);
-void _mesa_hash_table_remove(struct hash_table *ht,
+void _mesa_hash_table_remove(struct _mesa_hash_table *ht,
                              struct hash_entry *entry);
 
-struct hash_entry *_mesa_hash_table_next_entry(struct hash_table *ht,
+struct hash_entry *_mesa_hash_table_next_entry(struct _mesa_hash_table *ht,
                                                struct hash_entry *entry);
 struct hash_entry *
-_mesa_hash_table_random_entry(struct hash_table *ht,
+_mesa_hash_table_random_entry(struct _mesa_hash_table *ht,
                               bool (*predicate)(struct hash_entry *entry));
 
 uint32_t _mesa_hash_data(const void *data, size_t size);
@@ -95,7 +95,7 @@ static inline uint32_t _mesa_hash_pointer(const void *pointer)
  * an entry's data with the deleted marker), but not against insertion
  * (which may rehash the table, making entry a dangling pointer).
  */
-#define hash_table_foreach(ht, entry)                   \
+#define _mesa_hash_table_foreach(ht, entry)                   \
    for (entry = _mesa_hash_table_next_entry(ht, NULL);  \
         entry != NULL;                                  \
         entry = _mesa_hash_table_next_entry(ht, entry))

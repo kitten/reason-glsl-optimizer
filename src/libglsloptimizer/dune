@@ -10,4 +10,4 @@
   (targets libglsloptimizer_stubs.a dllglsloptimizer_stubs.so)
   (action (progn
     (run cmake .)
-    (run make))))
+    (run cmake --build .))))

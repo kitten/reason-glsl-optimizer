@@ -94,7 +94,7 @@ ir_variable_refcount_visitor::find_variable_entry(ir_variable *var)
 												   var);
 	if (e)
 		return (ir_variable_refcount_entry *)e->data;
-	
+
 	return NULL;
 }
 

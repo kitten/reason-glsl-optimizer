@@ -25,7 +25,7 @@
 #include "program.h"
 
 link_uniform_block_active *
-process_block(void *mem_ctx, struct hash_table *ht, ir_variable *var)
+process_block(void *mem_ctx, struct _mesa_hash_table *ht, ir_variable *var)
 {
    const uint32_t h = _mesa_hash_string(var->get_interface_type()->name);
    const hash_entry *const existing_block =

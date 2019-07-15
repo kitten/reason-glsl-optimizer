@@ -206,7 +206,7 @@ loop_state::insert_inductor(loop_variable* loopvar, loop_variable_state* state, 
 			return false;
 		}
 	}
-	
+
 	state->private_induction_variable_count++;
 	hash_table_insert(this->ht_inductors, state, var);
 	return true;
@@ -665,7 +665,7 @@ loop_analysis::visit_general(ir_instruction *ir)
    ir->accept (&refs);
 
    struct hash_entry *referenced_var;
-   hash_table_foreach (refs.ht, referenced_var) {
+   _mesa_hash_table_foreach (refs.ht, referenced_var) {
       ir_variable *var = (ir_variable *)referenced_var->key;
       loops->reference_variable(var, false);
    }

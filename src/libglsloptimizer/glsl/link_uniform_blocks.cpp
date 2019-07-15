@@ -182,7 +182,7 @@ link_uniform_blocks(void *mem_ctx,
     * encountered.  Since blocks with the same block-name must be the same,
     * the hash is organized by block-name.
     */
-   struct hash_table *block_hash =
+   struct _mesa_hash_table *block_hash =
       _mesa_hash_table_create(mem_ctx, _mesa_key_string_equal);
 
    if (block_hash == NULL) {
@@ -206,7 +206,7 @@ link_uniform_blocks(void *mem_ctx,
    count_block_size block_size;
    struct hash_entry *entry;
 
-   hash_table_foreach (block_hash, entry) {
+   _mesa_hash_table_foreach (block_hash, entry) {
       const struct link_uniform_block_active *const b =
          (const struct link_uniform_block_active *) entry->data;
 
@@ -259,7 +259,7 @@ link_uniform_blocks(void *mem_ctx,
                  == unsigned(ubo_packing_packed));
 
 
-   hash_table_foreach (block_hash, entry) {
+   _mesa_hash_table_foreach (block_hash, entry) {
       const struct link_uniform_block_active *const b =
          (const struct link_uniform_block_active *) entry->data;
       const glsl_type *block_type = b->type;

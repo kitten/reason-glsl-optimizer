@@ -69,7 +69,7 @@ public:
    ir_variable_refcount_entry *get_variable_entry(ir_variable *var);
    ir_variable_refcount_entry *find_variable_entry(ir_variable *var);
 
-   struct hash_table *ht;
+   struct _mesa_hash_table *ht;
    ir_variable* current_lhs;
 
    void *mem_ctx;

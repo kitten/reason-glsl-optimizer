@@ -42,7 +42,7 @@ struct link_uniform_block_active {
 
 class link_uniform_block_active_visitor : public ir_hierarchical_visitor {
 public:
-   link_uniform_block_active_visitor(void *mem_ctx, struct hash_table *ht,
+   link_uniform_block_active_visitor(void *mem_ctx, struct _mesa_hash_table *ht,
 				     struct gl_shader_program *prog)
       : success(true), prog(prog), ht(ht), mem_ctx(mem_ctx)
    {
@@ -57,7 +57,7 @@ public:
 
 private:
    struct gl_shader_program *prog;
-   struct hash_table *ht;
+   struct _mesa_hash_table *ht;
    void *mem_ctx;
 };
 

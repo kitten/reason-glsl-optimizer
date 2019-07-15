@@ -97,25 +97,25 @@ entry_is_free(const struct hash_entry *entry)
 }
 
 static int
-entry_is_deleted(const struct hash_table *ht, struct hash_entry *entry)
+entry_is_deleted(const struct _mesa_hash_table *ht, struct hash_entry *entry)
 {
    return entry->key == ht->deleted_key;
 }
 
 static int
-entry_is_present(const struct hash_table *ht, struct hash_entry *entry)
+entry_is_present(const struct _mesa_hash_table *ht, struct hash_entry *entry)
 {
    return entry->key != NULL && entry->key != ht->deleted_key;
 }
 
-struct hash_table *
+struct _mesa_hash_table *
 _mesa_hash_table_create(void *mem_ctx,
                         bool (*key_equals_function)(const void *a,
                                                     const void *b))
 {
-   struct hash_table *ht;
+   struct _mesa_hash_table *ht;
 
-   ht = ralloc(mem_ctx, struct hash_table);
+   ht = ralloc(mem_ctx, struct _mesa_hash_table);
    if (ht == NULL)
       return NULL;
 
@@ -144,7 +144,7 @@ _mesa_hash_table_create(void *mem_ctx,
  * freeing.
  */
 void
-_mesa_hash_table_destroy(struct hash_table *ht,
+_mesa_hash_table_destroy(struct _mesa_hash_table *ht,
                          void (*delete_function)(struct hash_entry *entry))
 {
    if (!ht)
@@ -153,7 +153,7 @@ _mesa_hash_table_destroy(struct hash_table *ht,
    if (delete_function) {
       struct hash_entry *entry;
 
-      hash_table_foreach(ht, entry) {
+      _mesa_hash_table_foreach(ht, entry) {
          delete_function(entry);
       }
    }
@@ -171,7 +171,7 @@ _mesa_hash_table_destroy(struct hash_table *ht,
  * This must be called before any keys are actually deleted from the table.
  */
 void
-_mesa_hash_table_set_deleted_key(struct hash_table *ht, const void *deleted_key)
+_mesa_hash_table_set_deleted_key(struct _mesa_hash_table *ht, const void *deleted_key)
 {
    ht->deleted_key = deleted_key;
 }
@@ -183,7 +183,7 @@ _mesa_hash_table_set_deleted_key(struct hash_table *ht, const void *deleted_key)
  * modified by the user.
  */
 struct hash_entry *
-_mesa_hash_table_search(struct hash_table *ht, uint32_t hash,
+_mesa_hash_table_search(struct _mesa_hash_table *ht, uint32_t hash,
                         const void *key)
 {
    uint32_t start_hash_address = hash % ht->size;
@@ -211,9 +211,9 @@ _mesa_hash_table_search(struct hash_table *ht, uint32_t hash,
 }
 
 static void
-_mesa_hash_table_rehash(struct hash_table *ht, int new_size_index)
+_mesa_hash_table_rehash(struct _mesa_hash_table *ht, int new_size_index)
 {
-   struct hash_table old_ht;
+   struct _mesa_hash_table old_ht;
    struct hash_entry *table, *entry;
 
    if (new_size_index >= ARRAY_SIZE(hash_sizes))
@@ -234,7 +234,7 @@ _mesa_hash_table_rehash(struct hash_table *ht, int new_size_index)
    ht->entries = 0;
    ht->deleted_entries = 0;
 
-   hash_table_foreach(&old_ht, entry) {
+   _mesa_hash_table_foreach(&old_ht, entry) {
       _mesa_hash_table_insert(ht, entry->hash,
                               entry->key, entry->data);
    }
@@ -249,7 +249,7 @@ _mesa_hash_table_rehash(struct hash_table *ht, int new_size_index)
  * so previously found hash_entries are no longer valid after this function.
  */
 struct hash_entry *
-_mesa_hash_table_insert(struct hash_table *ht, uint32_t hash,
+_mesa_hash_table_insert(struct _mesa_hash_table *ht, uint32_t hash,
                         const void *key, void *data)
 {
    uint32_t start_hash_address, hash_address;
@@ -313,7 +313,7 @@ _mesa_hash_table_insert(struct hash_table *ht, uint32_t hash,
  * the table deleting entries is safe.
  */
 void
-_mesa_hash_table_remove(struct hash_table *ht,
+_mesa_hash_table_remove(struct _mesa_hash_table *ht,
                         struct hash_entry *entry)
 {
    if (!entry)
@@ -331,7 +331,7 @@ _mesa_hash_table_remove(struct hash_table *ht,
  * an iteration over the table is O(table_size) not O(entries).
  */
 struct hash_entry *
-_mesa_hash_table_next_entry(struct hash_table *ht,
+_mesa_hash_table_next_entry(struct _mesa_hash_table *ht,
                             struct hash_entry *entry)
 {
    if (entry == NULL)
@@ -357,7 +357,7 @@ _mesa_hash_table_next_entry(struct hash_table *ht,
  * be set to NULL for no filtering.
  */
 struct hash_entry *
-_mesa_hash_table_random_entry(struct hash_table *ht,
+_mesa_hash_table_random_entry(struct _mesa_hash_table *ht,
                               bool (*predicate)(struct hash_entry *entry))
 {
    struct hash_entry *entry;

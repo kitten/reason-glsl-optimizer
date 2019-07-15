@@ -51,7 +51,7 @@ do_dead_code(exec_list *instructions, bool uniform_locations_assigned)
    v.run(instructions);
 
    struct hash_entry *e;
-   hash_table_foreach(v.ht, e) {
+   _mesa_hash_table_foreach(v.ht, e) {
       ir_variable_refcount_entry *entry = (ir_variable_refcount_entry *)e->data;
 
       /* Since each assignment is a reference, the refereneced count must be
